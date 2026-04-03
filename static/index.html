@@ -44,16 +44,26 @@
           <span id="summaryStatus" class="status"></span>
         </div>
 
-        <article id="reportRoot" class="report" hidden></article>
+        <div class="graph-layout">
+          <div class="graph-wrap">
+            <div id="graphRoot" class="graph-root" aria-label="문서 그래프"></div>
+            <div class="graph-footer">
+              <form id="qaForm" class="qa-form">
+                <input type="text" id="questionInput" placeholder="문서 내용에 대해 질문하세요" autocomplete="off" />
+                <button type="submit" id="qaSubmitBtn" class="btn">질문</button>
+              </form>
+              <span id="qaStatus" class="status"></span>
+            </div>
+          </div>
 
-        <section class="qa">
-          <h2>문서 Q&amp;A</h2>
-          <form id="qaForm" class="qa-form">
-            <input type="text" id="questionInput" placeholder="문서 내용에 대해 질문하세요" autocomplete="off" />
-            <button type="submit" class="btn">질문</button>
-          </form>
-          <div id="qaLog" class="qa-log"></div>
-        </section>
+          <aside id="inspector" class="inspector" aria-label="선택된 노드 상세">
+            <div class="ins-header">
+              <div id="inspectorKind" class="badge"></div>
+              <h2 id="inspectorTitle" class="ins-title">선택된 노드</h2>
+            </div>
+            <div id="inspectorBody" class="ins-body">그래프에서 노드를 클릭하면 내용이 표시됩니다.</div>
+          </aside>
+        </div>
       </section>
 
       <section class="panel placeholder" id="placeholder">
@@ -61,6 +71,7 @@
       </section>
     </main>
 
+    <script src="https://unpkg.com/cytoscape@3.29.2/dist/cytoscape.min.js"></script>
     <script src="/assets/app.js"></script>
   </body>
 </html>

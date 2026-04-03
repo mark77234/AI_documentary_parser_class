@@ -296,3 +296,87 @@ h3 {
   border-left: 2px solid var(--border);
   padding-left: 0.5rem;
 }
+
+.graph-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.graph-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.graph-root {
+  width: 100%;
+  flex: 1;
+  min-height: 620px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background:
+    radial-gradient(600px 300px at 20% 0%, rgba(185, 76, 255, 0.18), transparent 60%),
+    radial-gradient(600px 300px at 80% 100%, rgba(91, 159, 212, 0.12), transparent 55%),
+    rgba(26, 35, 50, 0.9);
+}
+
+.graph-footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.inspector {
+  position: sticky;
+  top: 96px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 1rem;
+  min-height: 200px;
+}
+
+.ins-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.ins-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.ins-body {
+  color: var(--text);
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  overflow: auto;
+  max-height: 60vh;
+}
+
+.ins-muted {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+  line-height: 1.35;
+}
+
+@media (max-width: 1100px) {
+  .graph-layout {
+    grid-template-columns: 1fr;
+  }
+  .inspector {
+    position: static;
+    max-height: 50vh;
+  }
+  .ins-body {
+    max-height: unset;
+  }
+}
