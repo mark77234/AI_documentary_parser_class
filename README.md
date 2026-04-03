@@ -2,6 +2,15 @@
 
 `seed.yaml` 기준 MVP: **localhost**에서 PDF·`.txt` 업로드 → 텍스트 추출 → **요약·리포트** → **문서 범위 Q&A**. 문서 목록·요약·대화는 브라우저 **localStorage**에만 저장됩니다.
 
+## 결과물
+
+<img width="1469" height="693" alt="스크린샷 2026-04-03 오후 4 23 36" src="https://github.com/user-attachments/assets/f7acbb19-be0b-46b9-af1e-f1f72b1cca26" />
+<img width="1470" height="712" alt="스크린샷 2026-04-03 오후 4 23 54" src="https://github.com/user-attachments/assets/d57b678e-9925-408a-8bce-fef707742326" />
+<img width="1158" height="728" alt="스크린샷 2026-04-03 오후 4 25 03" src="https://github.com/user-attachments/assets/001b34f8-4619-4725-a38d-7dd0dba50f84" />
+
+
+
+
 ## 요구 사항
 
 - Python 3.11+ 권장 (이 저장소는 3.14 venv로 검증)
