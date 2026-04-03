@@ -5,15 +5,18 @@ from __future__ import annotations
 import uuid
 from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
+ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(ROOT / ".env")
+
 from app.extract import detect_kind, extract_from_bytes
 from app import llm
 
-ROOT = Path(__file__).resolve().parent.parent
 STATIC = ROOT / "static"
 
 app = FastAPI(title="LocalDocAssistant", version="1.0.0")
@@ -55,8 +58,11 @@ async def upload(file: UploadFile = File(...)) -> dict:
 
 @app.post("/api/summary")
 async def summary(body: SummaryRequest) -> dict:
+    extracted_text = body.extracted_text.strip()
+    if not extracted_text:
+        raise HTTPException(400, "추출된 텍스트가 비어 있습니다.")
     try:
-        report = llm.generate_summary_report(body.extracted_text)
+        report = llm.generate_summary_report(extracted_text)
     except RuntimeError as e:
         raise HTTPException(503, str(e)) from e
     except Exception as e:
@@ -66,8 +72,14 @@ async def summary(body: SummaryRequest) -> dict:
 
 @app.post("/api/qa")
 async def qa(body: QARequest) -> dict:
+    extracted_text = body.extracted_text.strip()
+    question = body.question.strip()
+    if not extracted_text:
+        raise HTTPException(400, "추출된 텍스트가 비어 있습니다.")
+    if not question:
+        raise HTTPException(400, "질문이 비어 있습니다.")
     try:
-        out = llm.answer_question(body.extracted_text, body.question.strip())
+        out = llm.answer_question(extracted_text, question)
     except RuntimeError as e:
         raise HTTPException(503, str(e)) from e
     except Exception as e:

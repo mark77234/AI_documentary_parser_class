@@ -86,7 +86,10 @@ def generate_summary_report(extracted_text: str) -> dict[str, Any]:
         **_optional_temperature(),
     )
     raw = resp.choices[0].message.content or "{}"
-    return json.loads(raw)
+    data = json.loads(raw)
+    if not isinstance(data, dict):
+        raise ValueError("LLM summary output must be a JSON object")
+    return data
 
 
 def answer_question(extracted_text: str, question: str) -> dict[str, Any]:
@@ -106,8 +109,18 @@ def answer_question(extracted_text: str, question: str) -> dict[str, Any]:
     )
     raw = resp.choices[0].message.content or "{}"
     data = json.loads(raw)
+    if not isinstance(data, dict):
+        raise ValueError("LLM QA output must be a JSON object")
+
+    # UI는 문자열을 기대하므로 항상 문자열로 정규화한다.
     if "answer" not in data:
         data["answer"] = str(data)
-    if "evidence" not in data:
+    else:
+        data["answer"] = str(data.get("answer", ""))
+
+    if "evidence" not in data or data.get("evidence") is None:
         data["evidence"] = None
+    else:
+        data["evidence"] = str(data["evidence"])
+
     return data

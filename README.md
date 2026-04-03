@@ -5,7 +5,7 @@
 ## 요구 사항
 
 - Python 3.11+ 권장 (이 저장소는 3.14 venv로 검증)
-- OpenAI API 키(요약·Q&A 시에만 필요): 환경 변수 `OPENAI_API_KEY`
+- OpenAI API 키(요약·Q&A 시에만 필요): 프로젝트 루트 `.env`의 `OPENAI_API_KEY` 또는 환경 변수
 
 ## 설치
 
@@ -18,8 +18,11 @@ pip install -r requirements.txt
 
 ## 실행
 
+로컬에서 키를 쓰려면 루트에 `.env`를 두면 됩니다(`.env.example` 복사 후 `OPENAI_API_KEY` 입력). 앱이 시작될 때 자동으로 읽습니다.
+
 ```bash
-export OPENAI_API_KEY="sk-..."   # 요약/Q&A 사용 시
+# 선택: 셸에서 덮어쓰기
+# export OPENAI_API_KEY="sk-..."
 uvicorn app.main:app --host 127.0.0.1 --port 8765
 ```
 
