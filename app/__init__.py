@@ -1,0 +1,1 @@
+# LocalDocAssistant — FastAPI app package

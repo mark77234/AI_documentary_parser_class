@@ -1,0 +1,22 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 환경·비밀 (키는 여기 두지 말고 export 또는 CI 시크릿 사용)
+.env
+.env.*
+!.env.example
+
+# OS / 도구
+.DS_Store
+
+# 로컬 도구 캐시·자격 (민감 정보 가능)
+.ouroboros_home/
+.ouroboros_home_run*/
+.ouroboros_home_run2/

@@ -1,0 +1,72 @@
+# Ouroboros Seed — crystallized from interview (ambiguity intentionally low)
+goal: >
+  로컬 웹 UI에서 개발자가 PDF·텍스트를 업로드하면 AI가 즉시 요약·리포트를 생성하고,
+  업로드한 문서 범위 안에서만 질문-응답(Q&A)을 제공하는 localhost 기반 앱을 만든다.
+
+constraints:
+  - 타깃 사용자는 개발자이며, 목적은 문서 검토·이해 시간 절약이다.
+  - 입력은 PDF와 일반 텍스트(.txt)만 지원한다(로그 전용 파이프라인은 MVP 범위 밖).
+  - UI는 브라우저에서 접속하는 로컬 웹 앱이며, 실행은 localhost 서버를 띄워 지속 사용한다.
+  - Q&A는 업로드된 콘텐츠(추출 텍스트) 범위 내에서만 답변한다.
+  - 데이터는 주로 소형 파일(MB 단위 이하)을 전제로 한다.
+  - 세션·히스토리는 외부 SaaS가 아닌 사용자 기기 로컬에만 저장한다.
+  - MVP 1순위는 업로드 직후 요약·리포트 생성이다(Q&A는 동일 릴리스 내에서 문서 근거로 동작).
+
+acceptance_criteria:
+  - PDF 또는 .txt 업로드 후 서버가 본문 텍스트를 추출할 수 있다.
+  - 추출 텍스트를 바탕으로 화면에 요약·리포트(구조화된 섹션)가 표시된다.
+  - 사용자가 자연어 질문을 하면, 업로드 문서에 근거한 답만 반환한다(근거 없으면 모른다고 응답).
+  - 브라우저 새로고침/재방문 후에도 로컬 저장 정책에 맞게 이전 세션 또는 문서 목록이 유지된다(설계한 저장 방식대로).
+  - 앱은 문서화된 방법으로 localhost에서 실행 가능하다.
+
+ontology_schema:
+  name: LocalDocAssistant
+  description: 로컬 문서 업로드·요약·근거 기반 Q&A 도메인
+  fields:
+    - name: document_id
+      type: string
+      description: 업로드된 문서 인스턴스 식별자
+    - name: source_kind
+      type: string
+      description: pdf 또는 txt
+    - name: extracted_text
+      type: string
+      description: 추출·정규화된 전체 텍스트
+    - name: summary_report
+      type: object
+      description: 화면 표시용 요약·리포트 구조(섹션/불릿 등)
+    - name: session_store
+      type: object
+      description: 로컬 세션 메타데이터 및 사용자 히스토리 참조
+    - name: qa_turns
+      type: array
+      description: 질문·답변 턴(문서 근거 스니펫 참조 포함 권장)
+
+evaluation_principles:
+  - name: factual_grounding
+    description: 답변이 업로드 텍스트에 근거하는지
+    weight: 0.35
+  - name: summary_usefulness
+    description: 요약·리포트가 개발자 업무에 바로 쓰일 만한지
+    weight: 0.3
+  - name: local_privacy
+    description: 민감 데이터가 불필요하게 외부로 나가지 않는지(설정·기본값 기준)
+    weight: 0.2
+  - name: ux_simplicity
+    description: 업로드→결과까지 흐름이 짧고 명확한지
+    weight: 0.15
+
+exit_conditions:
+  - name: mvp_done
+    description: MVP 수용 기준을 모두 통과한 상태
+    criteria: acceptance_criteria 전부 충족 및 수동 스모크 테스트 통과
+  - name: scope_creep
+    description: 로그 파서·멀티 테넌트 SaaS·모바일 앱 등 인터뷰 범위 외 요구가 핵심 경로를 막을 때
+    criteria: 우선순위 재합의 또는 별도 Phase로 분리 합의
+
+metadata:
+  version: "1.0.0"
+  generated_at: "2026-04-03"
+  ambiguity_score: 0.12
+  interview_summary: >
+    로컬 웹, PDF+txt, 요약/리포트 우선, 문서 범위 Q&A, localhost 지속 실행, 온스크린 결과, 소형 파일, 로컬만 저장.
